@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({ title, icon }) => {
   return (
@@ -32,8 +32,8 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: "Contact Keeper",
-  icon: "fas fa-id-card-alt",
+  title: 'Contact Keeper',
+  icon: 'fas fa-id-card-alt',
 };
 
 export default Navbar;

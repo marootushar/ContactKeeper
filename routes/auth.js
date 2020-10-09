@@ -1,23 +1,23 @@
-const express = require("express");
-const { check, validationResult } = require("express-validator");
-const jwt = require("jsonwebtoken");
-const config = require("config");
-const bcrypt = require("bcryptjs");
-const auth = require("../middleware/auth");
+const express = require('express');
+const { check, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const bcrypt = require('bcryptjs');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
-const User = require("../models/User");
+const User = require('../models/User');
 
 // route        GET api/auth
 // desc         Get Logged in user
 // access       Private
-router.get("/", auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
@@ -25,10 +25,10 @@ router.get("/", auth, async (req, res) => {
 // desc         Auth User and Get Token
 // access       Public
 router.post(
-  "/",
+  '/',
   [
-    check("email", "Please include a valid email.").isEmail(),
-    check("password", "Password is required").exists(),
+    check('email', 'Please include a valid email.').isEmail(),
+    check('password', 'Password is required').exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -42,13 +42,13 @@ router.post(
       let user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ msg: "Invalid Credentials" });
+        return res.status(400).json({ msg: 'Invalid Credentials' });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res.status(400).json({ msg: "Wrong Password" });
+        return res.status(400).json({ msg: 'Wrong Password' });
       }
 
       const payload = {
@@ -59,7 +59,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        config.get('jwtSecret'),
         {
           expiresIn: 3600000,
         },
@@ -70,7 +70,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   }
 );

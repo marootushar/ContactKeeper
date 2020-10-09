@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ContactContext from "../../context/contact/contactContext";
-import ContactItem from "./ContactItem";
+import React, { useContext } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ContactContext from '../../context/contact/contactContext';
+import ContactItem from './ContactItem';
 
 const Contacts = (props) => {
   const contactContext = useContext(ContactContext);
