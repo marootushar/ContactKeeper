@@ -4,18 +4,16 @@ const db = config.get('mongoURI');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(
-      'mongodb+srv://tushar0079:hello123@contactkeeper.7ffgw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-      {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true,
-      }
-    );
+    await mongoose.connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    });
 
     console.log('MongoDB Connected...');
   } catch (err) {
+    console.log("Not connected");
     console.error(err.message);
     process.exit(1);
   }
