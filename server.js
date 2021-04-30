@@ -1,10 +1,22 @@
 const express = require('express');
+const fs = require('fs')
+const morgan = require('morgan')
+const path = require('path')
 const connectDB = require('./config/db');
 
 const app = express();
 
 // Connect Database
 connectDB();
+
+// Logging API Calls
+app.use(morgan('dev', {
+  skip: function (req,res) {return res.statusCode<400}
+}));
+
+app.use(morgan('common', {
+  stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+}));
 
 // Init Middleware
 app.use(express.json({ extended: false }));

@@ -1,5 +1,6 @@
 node_modules/
 /client/build
+access.log
 
 .DS_Store
 /client/.env.local
