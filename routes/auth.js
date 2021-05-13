@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth');
+const refresh = require('../middleware/refresh');
 const router = express.Router();
 
 const User = require('../models/User');
@@ -57,22 +58,43 @@ router.post(
         },
       };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        {
-          expiresIn: 3600000,
-        },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      const token = jwt.sign(payload, config.get('jwtSecret'), {
+        expiresIn: 30,
+      });
+
+      const rtoken = jwt.sign(payload, config.get('refreshSecret'), {
+        expiresIn: 120,
+      });
+
+      res.json({ token, rtoken });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
 );
+
+router.get('/refresh',refresh,async (req,res)=>{
+  try {
+    const payload = {
+      user: {
+        id: req.user.id,
+      },
+    };
+
+    const token = jwt.sign(payload, config.get('jwtSecret'), {
+      expiresIn: 30,
+    });
+
+    const rtoken = jwt.sign(payload, config.get('refreshSecret'), {
+      expiresIn: 120,
+    });
+
+    res.json({ token, rtoken });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+})
 
 module.exports = router;

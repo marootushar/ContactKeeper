@@ -3,6 +3,7 @@ import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import setAuthToken from '../../utils/setAuthToken';
+import refresh from '../../utils/refresh';
 import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
@@ -27,6 +28,7 @@ const AuthState = (props) => {
 
   // Load User
   const loadUser = async () => {
+    await refresh();
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
